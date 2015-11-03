@@ -2,7 +2,7 @@
 
 var fs = require("fs"),
     request = require("request"),
-    accessToken = fs.readFileSync('token');
+    accessToken = fs.readFileSync(__dirname + '/token');
 
 if(!accessToken) {
     throw new Error("No token, add token to file called 'token' in this dir");

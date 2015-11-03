@@ -2,10 +2,10 @@
 
 var fs = require("fs"),
     request = require("request"),
-    accessToken = process.env.SSDTOKEN;
+    accessToken = fs.readFileSync('token');
 
 if(!accessToken) {
-    throw new Error("No token, run: export SSDTOKEN=*");
+    throw new Error("No token, add token to file called 'token' in this dir");
 }
 
 request("http://ssd.api.port.ac.uk/v1/buildings/openaccess?access_token=" + accessToken, function(err, response, body) {

@@ -19,7 +19,7 @@ request("http://ssd.api.port.ac.uk/v1/buildings/openaccess?access_token=" + acce
 });
 
 function addToDb(responseBody) {
-    var pcData = require("./pc-data.json");
+    var pcData = require(__dirname + "/pc-data.json");
     pcData[Math.round(Date.now()/1000)] = responseBody;
     fs.writeFileSync("pc-data.json", JSON.stringify(pcData));
 }

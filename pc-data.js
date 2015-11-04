@@ -15,7 +15,7 @@ request("http://ssd.api.port.ac.uk/v1/buildings/openaccess?access_token=" + acce
             statusCode: response.statusCode
         });
     }
-    addToDb(body);
+    addToDb(JSON.parse(body));
 });
 
 function addToDb(responseBody) {

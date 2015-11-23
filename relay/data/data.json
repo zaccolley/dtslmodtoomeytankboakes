@@ -1,0 +1,43 @@
+[
+  {
+    "time": 1446599972,
+    "buildings": [
+      {
+        "id": "ag",
+        "name": "Anglesea",
+        "open": false,
+        "pcs": {
+          "occupied": 0,
+          "total": 12
+        }
+      },
+      {
+        "id": "ul",
+        "name": "Library",
+        "open": false,
+        "pcs": {
+          "occupied": 1,
+          "total": 401
+        }
+      },
+      {
+        "id": "pk",
+        "name": "Park",
+        "open": false,
+        "pcs": {
+          "occupied": 0,
+          "total": 50
+        }
+      },
+      {
+        "id": "po",
+        "name": "Portland",
+        "open": false,
+        "pcs": {
+          "occupied": 0,
+          "total": 126
+        }
+      }
+    ]
+  }
+]

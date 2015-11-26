@@ -94,6 +94,10 @@ var snapshotType = new GraphQLObjectType({
     time: {
       type: GraphQLInt,
       description: 'The time snapshot was taken',
+    },
+    buildings: {
+      type: new GraphQLList(buildingType),
+      description: 'The buildings for this snapshot'
     }
   }),
   interfaces: [nodeInterface],
@@ -107,6 +111,31 @@ var buildingType = new GraphQLObjectType({
     name: {
       type: GraphQLString,
       description: 'The full name of the building'
+    },
+    open: {
+      type: GraphQLBoolean,
+      description: 'Whether is building is open or not'
+    },
+    pcs: {
+      type: pcsType,
+      description: 'Which pcs are available out of a total'
+    }
+  }),
+  interfaces: [nodeInterface],
+});
+
+var pcsType = new GraphQLObjectType({
+  name: 'PCs',
+  description: 'PC availability',
+  fields: () => ({
+    id: globalIdField('PCs'),
+    occupied: {
+      type: GraphQLInt,
+      description: 'Amount of occupied pcs'
+    },
+    total: {
+      type: GraphQLInt,
+      description: 'Total amount of pcs available'
     }
   }),
   interfaces: [nodeInterface],
@@ -117,9 +146,6 @@ var buildingType = new GraphQLObjectType({
  */
 var {connectionType: snapshotConnection} =
   connectionDefinitions({name: 'Snapshot', nodeType: snapshotType});
-
-var {connectionType: buildingConnection} =
-  connectionDefinitions({name: 'Building', nodeType: buildingType});
 
 /**
  * This is the type that will be the root of our query,

@@ -3,7 +3,7 @@
     "time": 1446599972,
     "buildings": [
       {
-        "id": "ag",
+        "ref": "ag",
         "name": "Anglesea",
         "open": false,
         "pcs": {
@@ -12,7 +12,7 @@
         }
       },
       {
-        "id": "ul",
+        "ref": "ul",
         "name": "Library",
         "open": false,
         "pcs": {
@@ -21,7 +21,7 @@
         }
       },
       {
-        "id": "pk",
+        "ref": "pk",
         "name": "Park",
         "open": false,
         "pcs": {
@@ -30,7 +30,7 @@
         }
       },
       {
-        "id": "po",
+        "ref": "po",
         "name": "Portland",
         "open": false,
         "pcs": {

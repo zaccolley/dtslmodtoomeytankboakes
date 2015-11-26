@@ -22,6 +22,11 @@ var snapshots = data.map((item, i) => {
   var snapshot = new Snapshot();
   snapshot.id = `${i}`;
   snapshot.time = item.time;
+  snapshot.buildings = item.buildings;
+  snapshot.buildings.map((building, i) => {
+    building.id = `${snapshot.id}${i}`;
+    building.pcs.id = `${building.id}_pcs`;
+  });
   return snapshot;
 });
 

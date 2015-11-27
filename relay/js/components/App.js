@@ -1,6 +1,5 @@
 import React from 'react';
 import Relay from 'react-relay';
-import BuildingList from './BuildingList';
 
 class App extends React.Component {
   render() {
@@ -14,7 +13,13 @@ class App extends React.Component {
         {snapshots.edges.map(edge =>
           <li key={edge.node.id}>
             <h2>{String(new Date(edge.node.time))} (ID: {edge.node.id})</h2>
-            <BuildingList />
+            {edge.node.buildings.map((building, i) =>
+            <span key={i}>
+              <h3>{building.name}</h3>
+              <h4>PCs</h4>
+              {building.pcs.occupied} / {building.pcs.total} ({Math.ceil((building.pcs.occupied / building.pcs.total) * 100)}%)
+            </span>
+            )}
           </li>
         )}
       </ul>
@@ -32,7 +37,15 @@ export default Relay.createContainer(App, {
           edges {
             node {
               id,
-              time
+              time,
+              buildings{
+                id,
+                name,
+                pcs{
+                  occupied,
+                  total
+                }
+              }
             },
           },
         },

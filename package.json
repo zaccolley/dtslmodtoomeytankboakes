@@ -1,5 +1,5 @@
 {
-  "name": "dtslmodtoomeytankboakes",
+  "name": "webres",
   "version": "1.0.0",
   "description": "a cheeky repo for the first sprint of our web research unit",
   "main": "ssdapi.js",
@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zaccolley/dtslmodtoomeytankboakes.git"
+    "url": "git+https://github.com/zaccolley/webres.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/zaccolley/dtslmodtoomeytankboakes/issues"
+    "url": "https://github.com/zaccolley/webres/issues"
   },
-  "homepage": "https://github.com/zaccolley/dtslmodtoomeytankboakes#readme"
+  "homepage": "https://github.com/zaccolley/webres#readme"
 }

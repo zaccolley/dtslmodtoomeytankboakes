@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Relay from 'react-relay';
+import Building from './Building';
+import moment from 'moment';
 
-class App extends React.Component {
+class App extends Component {
   render() {
 
     const { snapshots } = this.props.viewer;
@@ -12,13 +14,12 @@ class App extends React.Component {
       <ul>
         {snapshots.edges.map(edge =>
           <li key={edge.node.id}>
-            <h2>{String(new Date(edge.node.time))} (ID: {edge.node.id})</h2>
+            <h2>
+              {moment(edge.node.time).format('MMMM Do YYYY, h:mm:ss a')}{' '}
+              <small>({moment(edge.node.time).fromNow()})</small>
+            </h2>
             {edge.node.buildings.map((building, i) =>
-            <span key={i}>
-              <h3>{building.name}</h3>
-              <h4>PCs</h4>
-              {building.pcs.occupied} / {building.pcs.total} ({Math.ceil((building.pcs.occupied / building.pcs.total) * 100)}%)
-            </span>
+              <Building key={building.id + i} building={building} />
             )}
           </li>
         )}
@@ -33,18 +34,14 @@ export default Relay.createContainer(App, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on User {
-        snapshots(first: 1) {
+        snapshots(first: 10) {
           edges {
             node {
               id,
               time,
               buildings{
                 id,
-                name,
-                pcs{
-                  occupied,
-                  total
-                }
+                ${Building.getFragment('building')}
               }
             },
           },

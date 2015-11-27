@@ -12,7 +12,7 @@ class App extends React.Component {
       <ul>
         {snapshots.edges.map(edge =>
           <li key={edge.node.id}>
-            <h2>{String(new Date(edge.node.time))} (ID: {edge.node.id})</h2>
+            <h2>{String(new Date(edge.node.time*1000))} (ID: {edge.node.id})</h2>
             {edge.node.buildings.map((building, i) =>
             <span key={i}>
               <h3>{building.name}</h3>

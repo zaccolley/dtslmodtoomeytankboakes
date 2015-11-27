@@ -1,6 +1,6 @@
 # webres
 a cheeky repo for the first sprint of our web research unit
 
-you can find more write up [over on the wiki](https://github.com/zaccolley/dtslmodtoomeytankboakes/wiki/)
+you can find more write up [over on the wiki](https://github.com/zaccolley/webres/wiki/)
 
 get your hands on the [raw data](http://labs.calcroft.co/pc-data.json)

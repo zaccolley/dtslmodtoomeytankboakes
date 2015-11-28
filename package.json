@@ -4,7 +4,8 @@
   "description": "a cheeky repo for the first sprint of our web research unit",
   "main": "ssdapi.js",
   "dependencies": {
-    "request": "^2.65.0"
+    "request": "^2.65.0",
+    "influx": "^4.0.1"
   },
   "devDependencies": {},
   "scripts": {

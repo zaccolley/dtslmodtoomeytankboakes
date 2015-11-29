@@ -14,7 +14,10 @@ get your hands on the [raw data](http://labs.calcroft.co/pc-data.json)
 5. `npm run update-schema`
 6. `npm run db-seed`
 
-_you can run `npm run db-test` to check the db is working_
+# test
+
+to test the database connection and return data you should run
+`npm run db-test'
 
 # build
 

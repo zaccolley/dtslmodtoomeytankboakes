@@ -86,12 +86,6 @@ function getSnapshots() {
   });
 }
 
-import util from 'util';
-console.log('snapposhots');
-getSnapshots().then(results => {
-  console.log(results[0].buildings[0].areas[0].groupings[0]);
-}, err => console.log(err));
-
 var viewer = new User();
 viewer.id = '1';
 viewer.name = 'Anonymous';

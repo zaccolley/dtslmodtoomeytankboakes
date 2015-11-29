@@ -11,7 +11,8 @@ get your hands on the [raw data](http://labs.calcroft.co/pc-data.json)
 2. `influx`
 3. `create database webres`
 4. `npm install`
-5. `npm run db-seed`
+5. `npm run update-schema`
+6. `npm run db-seed`
 
 _you can run `npm run db-test` to check the db is working_
 
@@ -22,7 +23,8 @@ if you update the schema you should run
 
 # run
 
-`npm run start`
+1. `npm start`
+2. go to [localhost:3000](localhost:3000) _and wait ffs_
 
 ## influxb
 Instead of ID as primary key, influx uses a timestamp, can be in ms or s, defined by data entry. **Need** to have `node-influx` v4 for it to work with influxdb v9.

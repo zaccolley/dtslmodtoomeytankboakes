@@ -5,6 +5,8 @@
   "repository": "facebook/relay-starter-kit",
   "version": "0.1.0",
   "scripts": {
+    "db-seed": "babel-node ./data/dbSeed.js",
+    "db-test": "babel-node ./data/dbTest.js",
     "start": "babel-node ./server.js",
     "update-schema": "babel-node ./scripts/updateSchema.js"
   },

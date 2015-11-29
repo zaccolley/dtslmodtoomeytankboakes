@@ -7,35 +7,101 @@
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
 
-import data from './data.json';
+import { options, client } from './db';
 
 // Model types
 class User extends Object {}
 class Snapshot extends Object {}
 
-// Mock data
+function getSnapshot(id){
+  return new Promise((resolve, reject) => {
+
+    const query = `SELECT * FROM availability WHERE time = '${id}'`;
+    client.query([options.database], query, (err, results) => {
+
+      if (err) {
+        return reject(err);
+      }
+
+      const data = results[0];
+
+      results = data.map(result => {
+        result.buildings = JSON.parse(result.buildings);
+        return result;
+      });
+
+      return resolve(results);
+
+    });
+  });
+}
+
+function getSnapshots() {
+  return new Promise((resolve, reject) => {
+
+    const query = `SELECT * FROM availability`;
+    client.query([options.database], query, (err, results) => {
+
+      if (err) {
+        return reject(err);
+      }
+
+      const data = results[0];
+
+      results = data.map(result => {
+        result.id = result.time;
+        result.buildings = JSON.parse(result.buildings);
+
+        result.buildings.map(building => {
+          building.id = building.reference + result.id;
+
+          building.areas.map((area, i) => {
+            area.id = building.id + i;
+
+            area.groupings.map((grouping, i) => {
+              grouping.id = area.id + i;
+
+              grouping.pcs.map((pc, i) => {
+                pc.id = grouping.id + i;
+
+                return pc;
+              });
+
+              return grouping;
+            });
+
+            return area;
+          });
+
+          return building;
+        });
+
+        return result;
+      });
+
+      resolve(results);
+
+    });
+
+  });
+}
+
+import util from 'util';
+console.log('snapposhots');
+getSnapshots().then(results => {
+  console.log(results[0].buildings[0].areas[0].groupings[0]);
+}, err => console.log(err));
+
 var viewer = new User();
 viewer.id = '1';
 viewer.name = 'Anonymous';
-
-var snapshots = data.map((item, i) => {
-  var snapshot = new Snapshot();
-  snapshot.id = `${i}`;
-  snapshot.time = item.time;
-  snapshot.buildings = item.buildings;
-  snapshot.buildings.map((building, i) => {
-    building.id = `${snapshot.id}${i}`;
-    building.pcs.id = `${building.id}_pcs`;
-  });
-  return snapshot;
-});
 
 module.exports = {
   // Export methods that your schema can use to interact with your database
   getUser: (id) => id === viewer.id ? viewer : null,
   getViewer: () => viewer,
-  getSnapshot: (id) => snapshots.find(s => s.id === id),
-  getSnapshots: () => snapshots,
+  getSnapshot,
+  getSnapshots,
   User,
   Snapshot
 };

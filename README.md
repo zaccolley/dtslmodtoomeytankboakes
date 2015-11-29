@@ -5,8 +5,27 @@ you can find more write up [over on the wiki](https://github.com/zaccolley/webre
 
 get your hands on the [raw data](http://labs.calcroft.co/pc-data.json)
 
-## influx
+# install
+
+1. install influxdb (see below)
+2. `influx`
+3. `create database webres`
+4. `npm install`
+5. `npm run db-seed`
+
+_you can run `npm run db-test` to check the db is working_
+
+# build
+
+if you update the schema you should run
+`npm run update-schema`
+
+# run
+
+`npm run start`
+
+## influxb
 Instead of ID as primary key, influx uses a timestamp, can be in ms or s, defined by data entry. **Need** to have `node-influx` v4 for it to work with influxdb v9.
 - Install [influx v9](https://influxdb.com/docs/v0.9/introduction/installation.html)
 - `influxd` to start database, `influx` to enter repl
-- [influxtest.js](https://github.com/zaccolley/webres/blob/master/influxtest.js) to see example of data entry
+- Seed with [`data/seed.js`](https://github.com/zaccolley/webres/blob/master/data/seed.js)

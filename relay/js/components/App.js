@@ -34,7 +34,7 @@ export default Relay.createContainer(App, {
   fragments: {
     viewer: () => Relay.QL`
       fragment on User {
-        snapshots(first: 10) {
+        snapshots(first: 50) {
           edges {
             node {
               id,

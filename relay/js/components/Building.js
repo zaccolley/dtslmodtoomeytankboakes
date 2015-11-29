@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import PCs from './PCs';
+import Area from './Area';
 
 class Building extends Component {
   render() {
@@ -9,8 +9,13 @@ class Building extends Component {
 
     return (
       <div>
-        <h3>{building.name}</h3>
-        <PCs pcs={building.pcs} />
+        <h3>{building.name} <small>({building.reference})</small></h3>
+        {building.open ? 'Open' : 'Closed'}
+        <ul>
+        {building.areas.map((area, i) =>
+          <li key={area.id + i}><Area area={area} /></li>
+        )}
+        </ul>
       </div>
     );
 
@@ -21,9 +26,12 @@ export default Relay.createContainer(Building, {
   fragments: {
     building: () => Relay.QL`
       fragment on Building {
+        reference,
         name,
-        pcs{
-          ${PCs.getFragment('pcs')}
+        open,
+        areas{
+          id,
+          ${Area.getFragment('area')}
         }
       }
     `,

@@ -23,6 +23,7 @@ import {
   connectionArgs,
   connectionDefinitions,
   connectionFromArray,
+  connectionFromPromisedArray,
   fromGlobalId,
   globalIdField,
   mutationWithClientMutationId,
@@ -80,7 +81,7 @@ var userType = new GraphQLObjectType({
       type: snapshotConnection,
       description: 'A person\'s collection of snapshots',
       args: connectionArgs,
-      resolve: (_, args) => connectionFromArray(getSnapshots(), args),
+      resolve: (_, args) => connectionFromPromisedArray(getSnapshots(), args)
     },
   }),
   interfaces: [nodeInterface],
@@ -92,7 +93,7 @@ var snapshotType = new GraphQLObjectType({
   fields: () => ({
     id: globalIdField('Snapshot'),
     time: {
-      type: GraphQLInt,
+      type: GraphQLString,
       description: 'The time snapshot was taken',
     },
     buildings: {
@@ -103,11 +104,16 @@ var snapshotType = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
+
 var buildingType = new GraphQLObjectType({
   name: 'Building',
   description: 'A building',
   fields: () => ({
     id: globalIdField('Building'),
+    reference: {
+      type: GraphQLString,
+      description: 'A short code for referencing the building'
+    },
     name: {
       type: GraphQLString,
       description: 'The full name of the building'
@@ -116,26 +122,64 @@ var buildingType = new GraphQLObjectType({
       type: GraphQLBoolean,
       description: 'Whether is building is open or not'
     },
-    pcs: {
-      type: pcsType,
-      description: 'Which pcs are available out of a total'
+    areas: {
+      type: new GraphQLList(areaType),
+      description: 'Areas in the building'
     }
   }),
   interfaces: [nodeInterface],
 });
 
-var pcsType = new GraphQLObjectType({
-  name: 'PCs',
-  description: 'PC availability',
+var areaType = new GraphQLObjectType({
+  name: 'Area',
+  description: 'Areas in the building',
   fields: () => ({
-    id: globalIdField('PCs'),
-    occupied: {
-      type: GraphQLInt,
-      description: 'Amount of occupied pcs'
+    id: globalIdField('Area'),
+    name: {
+      type: GraphQLString,
+      description: 'The name of the area'
     },
-    total: {
-      type: GraphQLInt,
-      description: 'Total amount of pcs available'
+    location: {
+      type: GraphQLString,
+      description: 'The location'
+    },
+    groupings: {
+      type: new GraphQLList(groupingType),
+      description: 'Groupings in the areas'
+    }
+  }),
+  interfaces: [nodeInterface],
+});
+
+var groupingType = new GraphQLObjectType({
+  name: 'Grouping',
+  description: 'groups ennet',
+  fields: () => ({
+    id: globalIdField('Grouping'),
+    location: {
+      type: GraphQLString,
+      description: 'The location'
+    },
+    pcs: {
+      type: new GraphQLList(pcType),
+      description: 'pcs in the groupings'
+    }
+  }),
+  interfaces: [nodeInterface],
+});
+
+var pcType = new GraphQLObjectType({
+  name: 'PC',
+  description: 'PC stuff',
+  fields: () => ({
+    id: globalIdField('PC'),
+    user: {
+      type: GraphQLString,
+      description: 'Student ID or false'
+    },
+    broken: {
+      type: GraphQLBoolean,
+      description: 'Is it borked?'
     }
   }),
   interfaces: [nodeInterface],

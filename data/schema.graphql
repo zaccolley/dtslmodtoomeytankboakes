@@ -1,0 +1,63 @@
+type Area implements Node {
+  id: ID!
+  name: String
+  location: String
+  groupings: [Grouping]
+}
+
+type Building implements Node {
+  id: ID!
+  reference: String
+  name: String
+  open: Boolean
+  areas: [Area]
+}
+
+type Grouping implements Node {
+  id: ID!
+  location: String
+  pcs: [PC]
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type PC implements Node {
+  id: ID!
+  user: String
+  broken: Boolean
+}
+
+type Query {
+  node(id: ID!): Node
+  viewer: User
+}
+
+type Snapshot implements Node {
+  id: ID!
+  time: String
+  buildings: [Building]
+}
+
+type SnapshotConnection {
+  pageInfo: PageInfo!
+  edges: [SnapshotEdge]
+}
+
+type SnapshotEdge {
+  node: Snapshot
+  cursor: String!
+}
+
+type User implements Node {
+  id: ID!
+  snapshots(after: String, first: Int, before: String, last: Int): SnapshotConnection
+}

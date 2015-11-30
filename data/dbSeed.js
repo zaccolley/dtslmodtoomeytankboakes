@@ -3,7 +3,7 @@ import request from 'request';
 
 console.log('Dropping database...');
 
-client.dropDatabase(options.database, (err, response) => {
+client.dropDatabase(options.database, (err) => {
 
   if (err) {
     return console.log(err);
@@ -12,7 +12,7 @@ client.dropDatabase(options.database, (err, response) => {
   console.log('Database dropped!');
   console.log('Creating database');
 
-  client.createDatabase(options.database, (err, result) => {
+  client.createDatabase(options.database, (err) => {
     if (err) {
       return console.log(err);
     }
@@ -64,7 +64,7 @@ client.dropDatabase(options.database, (err, response) => {
       client.writePoints("availability", snapshots, {
         database: options.database,
         precision: 's'
-      }, (err, result) => {
+      }, (err) => {
         if (err) {
           return console.log(err);
         }
@@ -88,7 +88,7 @@ function generateBuildings(data){
       name: item.building.name,
       open: item.open,
       areas: generateAreas(item.in_use, item.total)
-    }
+    };
   });
 }
 

@@ -46,7 +46,7 @@ client.dropDatabase(options.database, (err) => {
           // check if this is valid data in an array not a error
           if (Array.isArray(dataItem)) {
             try {
-              const buildings = JSON.stringify(generateBuildings(dataItem));
+              const buildings = escapeString(JSON.stringify(generateBuildings(dataItem)));
               snapshots.push([{ time, buildings }]);
             } catch(e) { // catch any naughty data
               console.log(dataItem);
@@ -60,6 +60,10 @@ client.dropDatabase(options.database, (err) => {
 
       console.log('Data processed successfully!');
       console.log('Writing data to database...');
+
+      function escapeString(string) {
+        return string.replace(/,/g, '\\,').replace(/ /g, '\\ ');
+      }
 
       client.writePoints("availability", snapshots, {
         database: options.database,

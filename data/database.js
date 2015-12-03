@@ -13,6 +13,10 @@ import { options, client } from './db';
 class User extends Object {}
 class Snapshot extends Object {}
 
+function unescapeString(string) {
+  return string.replace(/\\,/g, ',').replace(/\\ /g, ' ');
+}
+
 function getSnapshot(id){
   return new Promise((resolve, reject) => {
 
@@ -26,7 +30,7 @@ function getSnapshot(id){
       const data = results[0];
 
       results = data.map(result => {
-        result.buildings = JSON.parse(result.buildings);
+        result.buildings = JSON.parse(unescapeString(result.buildings));
         return result;
       });
 
@@ -50,7 +54,7 @@ function getSnapshots() {
 
       results = data.map(result => {
         result.id = result.time;
-        result.buildings = JSON.parse(result.buildings);
+        result.buildings = JSON.parse(unescapeString(result.buildings));
 
         result.buildings.map(building => {
           building.id = building.reference + result.id;

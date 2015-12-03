@@ -91,28 +91,132 @@ function generateBuildings(data){
       reference: item.building.reference,
       name: item.building.name,
       open: item.open,
-      areas: generateAreas(item.in_use, item.total)
+      areas: generateAreas(item.building.reference, item.in_use, item.total)
     };
   });
 }
 
-function generateAreas(occupied, total){
+function generateAreas(reference, occupied, total){
 
   var areas = [
-    { name: "downstairs", occupied: 0, total: 0 },
-    { name: "upstairs", occupied: 0, total: 0 },
-    { name: "outside", occupied: 0, total: 0 }
+    {
+      name: 'All',
+      location: 'forward',
+      percentage: 100
+    }
   ];
+
+  if (reference === 'ag') {
+    areas = [
+      {
+        name: 'Open Access Area',
+        location: 'forward',
+        percentage: 100
+      }
+    ];
+  } else if (reference === 'po') {
+    areas = [
+      {
+        name: 'Open Access #1',
+        location: 'ground floor',
+        percentage: 25
+      },
+      {
+        name: 'Open Access #2',
+        location: 'first floor',
+        percentage: 25
+      },
+      {
+        name: 'Shared Access #1',
+        location: 'first floor left',
+        percentage: 20
+      },
+      {
+        name: 'Shared Access #2',
+        location: 'first floor right',
+        percentage: 10
+      },
+      {
+        name: 'Open Access #3',
+        location: 'second floor',
+        percentage: 20
+      }
+    ];
+  } else if (reference === 'pk') {
+    areas = [
+      {
+        name: 'Open Access #1',
+        location: 'left left',
+        percentage: 32
+      },
+      {
+        name: 'Open Access #2',
+        location: 'left center',
+        percentage: 36
+      },
+      {
+        name: 'Open Access #1',
+        location: 'left right',
+        percentage: 32
+      }
+    ];
+  } else if (reference === 'ul') {
+    areas = [
+      {
+        name: 'Open Access #1',
+        location: 'right',
+        percentage: 5
+      },
+      {
+        name: 'Open Access #2',
+        location: 'right',
+        percentage: 5
+      },
+      {
+        name: 'Open Access #3',
+        location: 'right',
+        percentage: 5
+      },
+      {
+        name: 'Open Access #4',
+        location: 'right',
+        percentage: 5
+      },
+      {
+        name: 'Open Access #5',
+        location: 'right',
+        percentage: 5
+      },
+      {
+        name: 'Open Access #6',
+        location: 'right',
+        percentage: 5
+      },
+      {
+        name: 'Shared Library',
+        location: 'right',
+        percentage: 25
+      },
+      {
+        name: 'Main Library',
+        location: 'right',
+        percentage: 45
+      }
+    ];
+  }
+
+  // add default occupied and totals to areas
+  areas = areas.map(area => {
+    area.occupied = 0;
+    area.total = 0;
+    return area;
+  });
 
   areas = sharePcs(areas, occupied, total);
 
   areas = areas.map(area => {
 
-    area.location = '#';
     area.groupings = generateGroupings(area.occupied, area.total);
-
-    delete area.occupied;
-    delete area.total;
 
     return area;
 
@@ -127,13 +231,14 @@ function sharePcs(areas, occupied, total){
   areas = shareNumber(areas, occupied, true);
   areas = shareNumber(areas, total, false);
 
+
   return areas;
 }
 
 function shareNumber(areas, number, occupied){
   // each given that
-  var quotient = Math.floor(number / areas.length); // 1
-  var remainder = (number % areas.length); // 2
+  var quotient = Math.floor(number / areas.length);
+  var remainder = (number % areas.length);
 
   for (var i = 0; i < areas.length; i++) {
     var area = areas[i];

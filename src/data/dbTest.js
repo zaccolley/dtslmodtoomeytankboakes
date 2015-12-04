@@ -1,5 +1,8 @@
-import { options, client } from './db';
+import { options, client } from './dbClient';
 import util from 'util';
+
+/* Allow console.logs in this file */
+/* eslint-disable no-console */
 
 console.log('Running test script...');
 
@@ -14,11 +17,11 @@ client.query([options.database], query, (err, results) => {
 
   const data = results[0];
 
-  results = data.map(result => {
+  const output = data.map(result => {
     result.buildings = JSON.parse(result.buildings);
     return result;
   });
 
-  console.log(util.inspect(results, { showHidden: false, depth: null }));
+  console.log(util.inspect(output, { showHidden: false, depth: null }));
 
 });

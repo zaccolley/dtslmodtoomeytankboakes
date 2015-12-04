@@ -1,5 +1,6 @@
-node_modules
-token
 .DS_Store
 npm-debug.log
-data/schema.graphql
+node_modules
+
+src/token
+src/data/schema.graphql

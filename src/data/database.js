@@ -7,7 +7,7 @@
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
 
-import { options, client } from './db';
+import { options, client } from './dbClient';
 
 // Model types
 class User extends Object {}
@@ -17,7 +17,7 @@ function unescapeString(string) {
   return string.replace(/\\,/g, ',').replace(/\\ /g, ' ');
 }
 
-function getSnapshot(id){
+function getSnapshot(id) {
   return new Promise((resolve, reject) => {
 
     const query = `SELECT * FROM availability WHERE time = '${id}'`;
@@ -29,12 +29,12 @@ function getSnapshot(id){
 
       const data = results[0];
 
-      results = data.map(result => {
+      const output = data.map(result => {
         result.buildings = JSON.parse(unescapeString(result.buildings));
         return result;
       });
 
-      return resolve(results);
+      return resolve(output);
 
     });
   });
@@ -52,21 +52,21 @@ function getSnapshots() {
 
       const data = results[0];
 
-      results = data.map(result => {
+      const output = data.map(result => {
         result.id = result.time;
         result.buildings = JSON.parse(unescapeString(result.buildings));
 
         result.buildings.map(building => {
           building.id = building.reference + result.id;
 
-          building.areas.map((area, i) => {
-            area.id = building.id + i;
+          building.areas.map((area, areaCount) => {
+            area.id = building.id + areaCount;
 
-            area.groupings.map((grouping, i) => {
-              grouping.id = area.id + i;
+            area.groupings.map((grouping, groupingCount) => {
+              grouping.id = area.id + groupingCount;
 
-              grouping.pcs.map((pc, i) => {
-                pc.id = grouping.id + i;
+              grouping.pcs.map((pc, pcCount) => {
+                pc.id = grouping.id + pcCount;
 
                 return pc;
               });
@@ -83,14 +83,14 @@ function getSnapshots() {
         return result;
       });
 
-      resolve(results);
+      resolve(output);
 
     });
 
   });
 }
 
-var viewer = new User();
+const viewer = new User();
 viewer.id = '1';
 viewer.name = 'Anonymous';
 

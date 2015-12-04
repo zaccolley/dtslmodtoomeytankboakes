@@ -1,11 +1,5 @@
-/**
- *  Copyright (c) 2015, Facebook, Inc.
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree. An additional grant
- *  of patent rights can be found in the PATENTS file in the same directory.
- */
+/* Disable some linting for clarity */
+/* eslint-disable no-unused-vars, no-use-before-define */
 
 import {
   GraphQLBoolean,
@@ -46,25 +40,24 @@ import {
  * The first method defines the way we resolve an ID to its object.
  * The second defines the way we resolve an object to its GraphQL type.
  */
-var {nodeInterface, nodeField} = nodeDefinitions(
+const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
-    var {type, id} = fromGlobalId(globalId);
+    const { type, id } = fromGlobalId(globalId);
     if (type === 'User') {
       return getUser(id);
     } else if (type === 'Snapshot') {
       return getSnapshot(id);
-    } else {
-      return null;
-    }
+    } // else
+    return null;
   },
   (obj) => {
     if (obj instanceof User) {
       return userType;
-    } else if (obj instanceof Snapshot)  {
+    } else if (obj instanceof Snapshot) {
       return snapshotType;
-    } else {
-      return null;
-    }
+    } // else
+
+    return null;
   }
 );
 
@@ -72,7 +65,7 @@ var {nodeInterface, nodeField} = nodeDefinitions(
  * Define your own types here
  */
 
-var userType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
   name: 'User',
   description: 'A person who uses our app',
   fields: () => ({
@@ -87,7 +80,7 @@ var userType = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-var snapshotType = new GraphQLObjectType({
+const snapshotType = new GraphQLObjectType({
   name: 'Snapshot',
   description: 'A snapshot',
   fields: () => ({
@@ -105,7 +98,7 @@ var snapshotType = new GraphQLObjectType({
 });
 
 
-var buildingType = new GraphQLObjectType({
+const buildingType = new GraphQLObjectType({
   name: 'Building',
   description: 'A building',
   fields: () => ({
@@ -130,7 +123,7 @@ var buildingType = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-var areaType = new GraphQLObjectType({
+const areaType = new GraphQLObjectType({
   name: 'Area',
   description: 'Areas in the building',
   fields: () => ({
@@ -151,7 +144,7 @@ var areaType = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-var groupingType = new GraphQLObjectType({
+const groupingType = new GraphQLObjectType({
   name: 'Grouping',
   description: 'groups ennet',
   fields: () => ({
@@ -168,7 +161,7 @@ var groupingType = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-var pcType = new GraphQLObjectType({
+const pcType = new GraphQLObjectType({
   name: 'PC',
   description: 'PC stuff',
   fields: () => ({
@@ -188,14 +181,14 @@ var pcType = new GraphQLObjectType({
 /**
  * Define your own connection types here
  */
-var {connectionType: snapshotConnection} =
-  connectionDefinitions({name: 'Snapshot', nodeType: snapshotType});
+const { connectionType: snapshotConnection } =
+        connectionDefinitions({name: 'Snapshot', nodeType: snapshotType});
 
 /**
  * This is the type that will be the root of our query,
  * and the entry point into our schema.
  */
-var queryType = new GraphQLObjectType({
+const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
     node: nodeField,
@@ -211,7 +204,7 @@ var queryType = new GraphQLObjectType({
  * This is the type that will be the root of our mutations,
  * and the entry point into performing writes in our schema.
  */
-var mutationType = new GraphQLObjectType({
+const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
     // Add your own mutations here
@@ -222,7 +215,7 @@ var mutationType = new GraphQLObjectType({
  * Finally, we construct our schema (whose starting query type is the query
  * type we defined above) and export it.
  */
-export var Schema = new GraphQLSchema({
+export const Schema = new GraphQLSchema({
   query: queryType,
   // Uncomment the following after adding some mutation fields:
   // mutation: mutationType

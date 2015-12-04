@@ -39,7 +39,11 @@ If you ever update the schema you should run
 
 [To find up to date issues go to the following link: ](https://github.com/zaccolley/webres/issues)
 
-# InfluxDB
+## Linting
+
+Using eslint, would recommned installing the `linter-eslint` package from Atom. `apm install linter-eslint`
+
+## InfluxDB
 
 **What is InfluxDB**
 

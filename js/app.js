@@ -3,7 +3,6 @@ import 'babel/polyfill';
 import createHashHistory from 'history/lib/createHashHistory';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Relay from 'react-relay';
 import { RelayRouter } from 'react-router-relay';
 import { IndexRoute, Route } from 'react-router';
 
@@ -27,8 +26,7 @@ ReactDOM.render((
       <IndexRoute
         component={Snapshot}
         queries={ViewerQueries}
-        prepareParams={() => ({ buildingReference: 'any' })}
-        renderLoading={() => <Loading />}
+        prepareParams={() => ({ buildingReference: 'ag' })}
       />
       <Route
         path=":buildingReference" component={Snapshot}

@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import Building from './Building';
-import moment from 'moment';
 
 class Snapshot extends Component {
   static propTypes = {
-    viewer: React.PropTypes.object.isRequired
+    viewer: React.PropTypes.object.isRequired,
+    routeParams: React.PropTypes.object
   };
 
   render() {
 
-    const snapshots = this.props.viewer.snapshots;
-    const buildingReference = this.props.routeParams.buildingReference;
+    const { viewer: { snapshots }, routeParams: { buildingReference } } = this.props;
 
     return (
     <div>
     {snapshots.edges.map(edge =>
       <div key={edge.node.id}>
         {edge.node.buildings.map((building, i) => {
-          if (building.reference === 'ag') {
+          if (building.reference === buildingReference) {
             return <Building key={building.id + i} building={building} />;
           }
         })}

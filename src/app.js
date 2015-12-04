@@ -12,7 +12,7 @@ import Snapshot from './components/Snapshot';
 
 import ViewerQueries from './queries/ViewerQueries';
 
-import '../styles/main.scss'; // include our stylesheet
+import './styles/main.scss'; // include our stylesheet
 
 const history = createHashHistory({ queryKey: false });
 

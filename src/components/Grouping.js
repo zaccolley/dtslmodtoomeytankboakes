@@ -57,19 +57,19 @@ class Grouping extends Component {
       <div className="groupings">
         <div className="grouping">
           <div className="grouping__arrow grouping__arrow--left">{arrows.left}</div>
-          <div className="grouping__amount">{frees[0].length}</div>
+          <div className="grouping__amount">1 <small>({frees[0].length})</small></div>
         </div>
         <div className="grouping">
           <div className="grouping__arrow grouping__arrow--left">{arrows.topLeft}</div>
-          <div className="grouping__amount">{frees[1].length}</div>
+          <div className="grouping__amount">2 <small>({frees[1].length})</small></div>
         </div>
         <div className="grouping">
           <div className="grouping__arrow grouping__arrow--left">{arrows.right}</div>
-          <div className="grouping__amount">{frees[2].length}</div>
+          <div className="grouping__amount">3 <small>({frees[2].length})</small></div>
         </div>
         <div className="grouping">
           <div className="grouping__arrow grouping__arrow--left">{arrows.top}</div>
-          <div className="grouping__amount">{frees[3].length}</div>
+          <div className="grouping__amount">4 <small>({frees[3].length})</small></div>
         </div>
       </div>
     );

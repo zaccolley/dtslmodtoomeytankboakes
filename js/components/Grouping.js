@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 
 class Grouping extends Component {
+  static propTypes = {
+    grouping: React.PropTypes.object.isRequired
+  };
+
   render() {
 
     const { grouping } = this.props;
-
-    console.log(grouping.pcs);
 
     var frees = [
       [], [], [], []
@@ -39,15 +41,35 @@ class Grouping extends Component {
 
     }
 
-    console.log(frees);
+    const arrows = {
+      'top': '↑',
+      'top right': '↗',
+      'right': '→',
+      'bottom right': '↘',
+      'bottom': '↓',
+      'bottom left': '↙',
+      'left': '←',
+      'top left': '↖'
+    };
 
     return (
-      <div>
-        {grouping.location}
-        <p>Amount of single pcs free: {frees[0].length}</p>
-        <p>Amount of double pcs free: {frees[1].length}</p>
-        <p>Amount of triple pcs free: {frees[2].length}</p>
-        <p>Amount of quadruple pcs free: {frees[3].length}</p>
+      <div className="groupings">
+        <div className="grouping">
+          <div className="grouping__arrow grouping__arrow--left">{arrows['left']}</div>
+          <div className="grouping__amount">{frees[0].length}</div>
+        </div>
+        <div className="grouping">
+          <div className="grouping__arrow grouping__arrow--left">{arrows['top left']}</div>
+          <div className="grouping__amount">{frees[1].length}</div>
+        </div>
+        <div className="grouping">
+          <div className="grouping__arrow grouping__arrow--left">{arrows['right']}</div>
+          <div className="grouping__amount">{frees[2].length}</div>
+        </div>
+        <div className="grouping">
+          <div className="grouping__arrow grouping__arrow--left">{arrows['top']}</div>
+          <div className="grouping__amount">{frees[3].length}</div>
+        </div>
       </div>
     );
 

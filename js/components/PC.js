@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 
 class PC extends Component {
+  static propTypes = {
+    pc: React.PropTypes.object.isRequired
+  };
+
   render() {
 
     const { pc } = this.props;

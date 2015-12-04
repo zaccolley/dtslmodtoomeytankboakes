@@ -3,19 +3,19 @@ import Relay from 'react-relay';
 import Area from './Area';
 
 class Building extends Component {
+  static propTypes = {
+    building: React.PropTypes.object.isRequired
+  };
+
   render() {
 
     const { building } = this.props;
 
     return (
       <div>
-        <h3>{building.name} <small>({building.reference})</small></h3>
-        {building.open ? 'Open' : 'Closed'}
-        <ul>
-        {building.areas.map((area, i) =>
-          <li key={area.id + i}><Area area={area} /></li>
-        )}
-        </ul>
+      {building.areas.map((area, i) =>
+        <Area key={area.id + i} area={area} />
+      )}
       </div>
     );
 

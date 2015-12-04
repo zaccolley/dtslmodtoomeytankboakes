@@ -3,20 +3,18 @@ import Relay from 'react-relay';
 import Grouping from './Grouping';
 
 class Area extends Component {
+  static propTypes = {
+    area: React.PropTypes.object.isRequired
+  };
+
   render() {
 
     const { area } = this.props;
 
+    const grouping = area.groupings[0];
+
     return (
-      <div>
-        {area.name}
-        {area.location}
-        <ul>
-        {area.groupings.map((grouping, i) =>
-          <li key={grouping.id + i}><Grouping grouping={grouping} /></li>
-        )}
-        </ul>
-      </div>
+      <Grouping grouping={grouping} />
     );
 
   }

@@ -22,6 +22,7 @@ graphQLServer.listen(GRAPHQL_PORT, () => console.log(
 // Serve the Relay app
 var compiler = webpack({
   entry: path.resolve(__dirname, 'js', 'app.js'),
+  devtool: 'source-map',
   module: {
     loaders: [
       {
@@ -29,10 +30,17 @@ var compiler = webpack({
         loader: 'babel',
         query: {stage: 0, plugins: ['./build/babelRelayPlugin']},
         test: /\.js$/,
+      },
+      {
+        test: /\.scss$/,
+        loaders: ['style', 'css', 'autoprefixer?browsers=last 2 versions', 'sass']
       }
     ]
   },
-  output: {filename: 'app.js', path: '/'}
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, './styles')]
+  },
+  output: { filename: 'app.js', path: '/' }
 });
 var app = new WebpackDevServer(compiler, {
   contentBase: '/public/',

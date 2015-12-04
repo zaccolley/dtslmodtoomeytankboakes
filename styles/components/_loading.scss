@@ -1,0 +1,17 @@
+/* loading */
+
+.loading {}
+
+.loading__message {
+  margin-top: 3em;
+  font-size: 5em;
+  text-align: center;
+  animation: loadingIn .5s;
+}
+
+@keyframes loadingIn {
+  from{
+    opacity: 0;
+    transform: translateY(-15%);
+  }
+}

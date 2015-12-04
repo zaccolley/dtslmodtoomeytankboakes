@@ -1,0 +1,42 @@
+/* groupings */
+
+.groupings {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.grouping {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.grouping:nth-child(1) { background: darken($colour--bg,  5%); }
+.grouping:nth-child(2) { background: darken($colour--bg, 10%); }
+.grouping:nth-child(3) { background: darken($colour--bg,  5%); }
+.grouping:nth-child(4) { background: darken($colour--bg, 10%); }
+
+.grouping__amount {
+  flex-grow: 1;
+  padding: .5em 0;
+
+  text-align: center;
+  font-size: 3em;
+}
+
+.grouping__arrow {
+  flex-grow: 3;
+  padding: 1em 0;
+
+  text-align: center;
+  font-size: 8em;
+}
+
+.grouping__arrow--top {}
+.grouping__arrow--top-right {}
+.grouping__arrow--right {}
+.grouping__arrow--bottom-right {}
+.grouping__arrow--bottom-left {}
+.grouping__arrow--left {}
+.grouping__arrow--top-left {}

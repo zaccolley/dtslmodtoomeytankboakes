@@ -7,15 +7,20 @@ class Snapshot extends Object {}
 function getSnapshot(key) {
   return new Promise((resolve, reject) => {
 
-    db.view('snapshots/all', { key }, (err, results) => {
+    db.view('snapshots/all', { key }, (err, response) => {
 
       if (err) {
         return reject(err);
       }
 
-      const data = results[0];
+      const data = response.map(doc => doc);
 
-      return resolve(data);
+      const output = data.map(result => {
+        result.id = result._id;
+        delete result._id;
+      })[0];
+
+      return resolve(output);
 
     });
   });

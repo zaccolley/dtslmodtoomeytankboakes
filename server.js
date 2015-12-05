@@ -1,3 +1,5 @@
+require('dotenv').load(); // get .env values
+
 import express from 'express';
 import graphQLHTTP from 'express-graphql';
 import path from 'path';
@@ -20,9 +22,9 @@ graphQLServer.use('/', graphQLHTTP({
   schema: Schema,
 }));
 
-graphQLServer.listen(GRAPHQL_PORT, () => console.log(
-  "📊" +`  GraphQL server is now running on http://localhost:${GRAPHQL_PORT}`
-));
+graphQLServer.listen(GRAPHQL_PORT, () => {
+  console.log(` 📊  GraphQL server is now running on http://localhost:${GRAPHQL_PORT}`+``);
+});
 
 // Serve the Relay app
 const compiler = webpack({
@@ -58,5 +60,5 @@ const app = new WebpackDevServer(compiler, {
 // Serve static resources
 app.use('/', express.static(path.resolve(__dirname, 'public')));
 app.listen(APP_PORT, () => {
-  console.log("💻" +`  The app server is now running on http://localhost:${APP_PORT}\n`);
+  console.log(` 💻  The app server is now running on http://localhost:${APP_PORT}\n`);
 });

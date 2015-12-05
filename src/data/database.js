@@ -1,27 +1,13 @@
-/**
- *  Copyright (c) 2015, Facebook, Inc.
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree. An additional grant
- *  of patent rights can be found in the PATENTS file in the same directory.
- */
-
-import { options, client } from './dbClient';
+import { db } from './dbClient';
 
 // Model types
 class User extends Object {}
 class Snapshot extends Object {}
 
-function unescapeString(string) {
-  return string.replace(/\\,/g, ',').replace(/\\ /g, ' ');
-}
-
-function getSnapshot(id) {
+function getSnapshot(key) {
   return new Promise((resolve, reject) => {
 
-    const query = `SELECT * FROM availability WHERE time = '${id}'`;
-    client.query([options.database], query, (err, results) => {
+    db.view('snapshots/all', { key }, (err, results) => {
 
       if (err) {
         return reject(err);
@@ -29,12 +15,7 @@ function getSnapshot(id) {
 
       const data = results[0];
 
-      const output = data.map(result => {
-        result.buildings = JSON.parse(unescapeString(result.buildings));
-        return result;
-      });
-
-      return resolve(output);
+      return resolve(data);
 
     });
   });
@@ -43,18 +24,16 @@ function getSnapshot(id) {
 function getSnapshots() {
   return new Promise((resolve, reject) => {
 
-    const query = `SELECT * FROM availability`;
-    client.query([options.database], query, (err, results) => {
-
+    db.view('snapshots/all', { limit: 5 }, (err, response) => {
       if (err) {
-        return reject(err);
+        return reject(`✗ Didn't work...\n Database error: ${err}`);
       }
 
-      const data = results[0];
+      const data = response.map(doc => doc);
 
       const output = data.map(result => {
-        result.id = result.time;
-        result.buildings = JSON.parse(unescapeString(result.buildings));
+        result.id = result._id;
+        delete result._id;
 
         result.buildings.map(building => {
           building.id = building.reference + result.id;

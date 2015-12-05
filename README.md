@@ -13,12 +13,13 @@ Rob Calcroft created a script to collect the information, get your hands on the 
 
 To install the application onto your machine follow the following links:
 
-1. Install InfluxDB (See the Influx DB section)
-2. Run the `influx` command to create an active Influx section.
-3. `create database webres`
-4. `npm install`
-5. `npm run update-schema`
-6. `npm run db-seed`
+1. [Install CouchDB](https://wiki.apache.org/couchdb/Installation)
+2. (Optional) Add .env values (see .env-sample)
+3. `npm install`
+4. `npm run update-schema`
+5. `npm run db-seed`
+
+_Using eslint, would recommemd installing the `linter-eslint` package from Atom. `apm install linter-eslint`_
 
 # Test
 
@@ -33,23 +34,8 @@ If you ever update the schema you should run
 # Run
 
 1. `npm start`
-2. go to [localhost:3000](localhost:3000) _and wait ages as we cba to cache anything ffs_
+2. Go to [localhost:3000](localhost:3000)
 
 # Issues
 
 [To find up to date issues go to the following link: ](https://github.com/zaccolley/webres/issues)
-
-## Linting
-
-Using eslint, would recommned installing the `linter-eslint` package from Atom. `apm install linter-eslint`
-
-## InfluxDB
-
-**What is InfluxDB**
-
-Timestamp database, used timestamps as primary key instead of ID's.
-**Need** to have `node-influx` v4 for it to work with InfluxDB v9.
-
-- Install [influx v9](https://influxdb.com/docs/v0.9/introduction/installation.html)
-- `influxd` to start database, `influx` to start database instance.
-- Seed with [`data/seed.js`](https://github.com/zaccolley/webres/blob/master/data/seed.js)

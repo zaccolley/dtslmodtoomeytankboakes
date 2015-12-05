@@ -1,31 +1,15 @@
-import { options, client } from './dbClient';
-import util from 'util';
+import { db } from './dbClient';
 
 /* Allow console.logs in this file */
 /* eslint-disable no-console */
 
-function unescapeString(string) {
-  return string.replace(/\\,/g, ',').replace(/\\ /g, ' ');
-}
-
-console.log('Running test script...');
-
-const time = '2015-11-04T01:19:32Z';
-
-const query = `SELECT * FROM availability WHERE time = '${time}'`;
-client.query([options.database], query, (err, results) => {
-
+db.view('snapshots/all', { limit: 5 }, (err, response) => {
   if (err) {
-    return console.log(err);
+    return console.log(`✗ Didn't work...\n Database error: ${err}`);
   }
 
-  const data = results[0];
+  const docs = response.map(doc => doc);
 
-  const output = data.map(result => {
-    result.buildings = JSON.parse(unescapeString(result.buildings));
-    return result;
-  });
-
-  console.log(util.inspect(output, { showHidden: false, depth: null }));
-
+  console.log(`✓ Seems to have worked. Here\'s what came back:\n`);
+  console.dir(docs);
 });

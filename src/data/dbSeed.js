@@ -1,12 +1,8 @@
-import { options, client } from './dbClient';
+import { db } from './dbClient';
 import request from 'request';
 
 /* Allow console.logs in this file */
 /* eslint-disable no-console */
-
-function escapeString(string) {
-  return string.replace(/,/g, '\\,').replace(/ /g, '\\ ');
-}
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -438,96 +434,111 @@ function generateBuildings(data) {
   });
 }
 
-console.log('Dropping database...');
+function createDatabase() {
+  console.log('⚡ Creating database...');
 
-client.dropDatabase(options.database, (err) => {
+  db.create();
 
-  if (err) {
-    return console.log(err);
-  }
+  console.log('✓ Database created!');
 
-  console.log('Database dropped!');
-  console.log('Creating database');
+  console.log('⚡ Creating views for database...');
 
-  client.createDatabase(options.database, (databaseErr) => {
-    if (databaseErr) {
-      return console.log(databaseErr);
+  db.save('_design/snapshots', {
+    all: {
+      map: `function(doc) {
+        if (doc.time && doc.buildings) {
+          emit(doc._id, doc);
+        }
+      }`
+    },
+    byTime: {
+      map: `function(doc) {
+        if (doc.time && doc.buildings) {
+          emit(doc._time, doc);
+        }
+      }`
     }
+  });
 
-    console.log('Database created!');
-    console.log('Requesting data from API...');
+  console.log('✓ Views created!');
 
-    new Promise((resolve, reject) => {
-      request('http://labs.calcroft.co/pc-data.json', (requestErr, response, body) => {
-        if (requestErr) {
-          return reject(requestErr);
-        }
+  console.log('⚡ Requesting data from API...');
 
-        if (response.statusCode === 200) {
-          console.log('Got data successfully!');
-          return resolve(JSON.parse(body));
-        }
-
-        reject([err, response.statusCode]);
-      });
-    }).then(data => {
-
-      console.log('Processing data...');
-
-      const snapshots = [];
-
-      for (const time in data) {
-        if (data.hasOwnProperty(time)) {
-          const dataItem = data[time];
-
-          // check if this is valid data in an array not a error
-          if (Array.isArray(dataItem)) {
-            try {
-              const buildings = escapeString(JSON.stringify(generateBuildings(dataItem)));
-              const snapshot = [{ time, buildings }];
-
-              const fs = require('fs');
-
-              const outputFilename = `./${time}-tmp-data.json`;
-              /* eslint-disable no-loop-func */
-              fs.writeFile(outputFilename, JSON.stringify(buildings, null, 4), (writeErr) => {
-                if (writeErr) {
-                  console.log(writeErr);
-                } else {
-                  console.log(`JSON saved to ${outputFilename}`);
-                }
-              });
-
-              snapshots.push(snapshot);
-            } catch (e) { // catch any naughty data
-              console.log(dataItem);
-              return console.log('Error: ', e);
-            }
-          }
-
-        }
+  new Promise((resolve, reject) => {
+    request('http://labs.calcroft.co/pc-data.json', (requestErr, response, body) => {
+      if (requestErr) {
+        return reject(requestErr);
       }
 
-      console.log('Data processed successfully!');
-      console.log('Writing data to database...');
+      if (response.statusCode === 200) {
+        console.log('✓ Data requested!');
+        return resolve(JSON.parse(body));
+      }
 
-      client.writePoints('availability', snapshots, {
-        database: options.database,
-        precision: 's'
-      }, (databaseWriteErr) => {
-        if (databaseWriteErr) {
-          console.log('cool');
-          return console.log(databaseWriteErr);
+      reject([requestErr, response.statusCode]);
+    });
+  }).then(data => {
+
+    console.log('⚡ Processing data...');
+
+    const snapshots = [];
+
+    for (const time in data) {
+      if (data.hasOwnProperty(time)) {
+        const dataItem = data[time];
+
+        // check if this is valid data in an array not a error
+        if (Array.isArray(dataItem)) {
+          try {
+            const buildings = generateBuildings(dataItem);
+            snapshots.push({ time, buildings });
+          } catch (e) { // catch any naughty data
+            return console.log('✗ Generating buildings error: ', e);
+          }
         }
 
-        console.log('Data written to the database');
+      }
+    }
 
-      });
+    console.log('✓ Data processed into snapshots!');
+    console.log('⚡ Writing snapshots to database...');
 
-    }).catch(val => {
-      console.log(val);
+    db.save(snapshots, (databaseWriteErr) => { // eslint-disable-line no-loop-func
+      if (databaseWriteErr) {
+        return console.log('✗ Database error: ', databaseWriteErr);
+      }
+
+      console.log('✓ Snapshots written to database!');
     });
 
+
+  }).catch(val => {
+    console.log(val);
   });
+}
+
+console.log('⚡ Checking database...');
+
+db.exists((err, exists) => {
+
+  if (err) {
+    console.log('✗ Database error: ', err);
+  } else if (exists) {
+    console.log('✓ Database exists!');
+
+    console.log('⚡ Destroying database...');
+    db.destroy((destroyDbErr) => {
+      if (destroyDbErr) {
+        return console.log('✗ Database error: ', destroyDbErr);
+      }
+
+      console.log('✓ Destroyed database!');
+      createDatabase();
+    });
+
+  } else {
+    console.log('✗ Database doesn\'t exists!');
+    createDatabase();
+  }
 
 });

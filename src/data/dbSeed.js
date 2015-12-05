@@ -8,6 +8,47 @@ function escapeString(string) {
   return string.replace(/,/g, '\\,').replace(/ /g, '\\ ');
 }
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
+
+function shareAmount(items, inputOccupied, inputTotal) {
+
+  let occupiedTotal = 0;
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+
+    // create occupied property
+    item.occupied = 0;
+
+    const itemRatio = item.total / inputTotal;
+    const occupiedAmount = Math.floor(itemRatio * inputOccupied);
+    item.occupied = occupiedAmount;
+
+    // add this to the total
+    occupiedTotal += occupiedAmount;
+  }
+
+  let leftOverOccupied = inputOccupied - occupiedTotal;
+
+  // distribute left overs randomly
+  while (leftOverOccupied > 0) {
+    const randomAreaIndex = Math.floor(Math.random() * items.length);
+    items[randomAreaIndex].occupied += 1;
+
+    leftOverOccupied--;
+  }
+
+  return items;
+}
+
 function generateStudentID() {
 
   let studentId = 'up';
@@ -24,87 +65,40 @@ function generatePcs(occupied, total) {
 
   const pcs = [];
 
+  let occupiedCount = occupied;
+
   for (let i = 0; i < total; i++) {
 
-    const isBroken = !!Math.round(Math.random());
-    let isOccupied = false;
-
-    let occupiedCount = occupied;
+    let user = false;
 
     // check if we still have occupied pcs to generate
     if (occupiedCount > 0) {
 
-      // 50/50 chance of it being is occupied
-      isOccupied = Math.round(Math.random());
+      user = generateStudentID();
 
-      // if it is occupied then we decrease the amount of
-      // occupied pcs needed to generate
-      if (isOccupied) {
-        occupiedCount--;
-      }
-
+      occupiedCount--;
     }
 
-    const pc = {
-      broken: isBroken,
-      user: (isOccupied ? generateStudentID() : false),
-      software: []
-    };
-
-    pcs.push(pc);
+    pcs.push({ user });
 
   }
+
+  shuffleArray(pcs);
 
   return pcs;
 
 }
 
-function generateGroupings(occupied, total) {
+function generateGroupings(area, occupied, total) {
 
-  const groupings = [
-    {
-      location: '#',
-      pcs: generatePcs(occupied, total)
-    }
-  ];
+  let groupings = shareAmount(area.groupings, occupied, total);
+
+  groupings = groupings.map(grouping => {
+    grouping.pcs = generatePcs(grouping.occupied, grouping.total);
+    return grouping;
+  });
 
   return groupings;
-}
-
-function shareNumber(areas, number, occupied) {
-  // each given that
-  const quotient = Math.floor(number / areas.length);
-  let remainder = (number % areas.length);
-
-  for (let i = 0; i < areas.length; i++) {
-    const area = areas[i];
-
-    if (occupied) {
-      area.occupied += quotient;
-    } else {
-      area.total += quotient;
-    }
-
-    if (remainder > 0) {
-      if (occupied) {
-        area.occupied += 1;
-      } else {
-        area.total += 1;
-      }
-
-      remainder--;
-    }
-  }
-
-  return areas;
-}
-
-function sharePcs(areas, occupied, total) {
-  let newAreas = areas;
-  newAreas = shareNumber(newAreas, occupied, true);
-  newAreas = shareNumber(newAreas, total, false);
-
-  return newAreas;
 }
 
 function generateAreas(reference, occupied, total) {
@@ -113,7 +107,10 @@ function generateAreas(reference, occupied, total) {
     {
       name: 'All',
       location: 'forward',
-      percentage: 100
+      total: 0,
+      groupings: [
+        { total: 0 }
+      ]
     }
   ];
 
@@ -122,7 +119,11 @@ function generateAreas(reference, occupied, total) {
       {
         name: 'Open Access Area',
         location: 'forward',
-        percentage: 100
+        total: 12,
+        groupings: [
+          { total: 6 },
+          { total: 6 }
+        ]
       }
     ];
   } else if (reference === 'po') {
@@ -130,27 +131,61 @@ function generateAreas(reference, occupied, total) {
       {
         name: 'Open Access #1',
         location: 'ground floor',
-        percentage: 25
+        total: 32,
+        groupings: [
+          { total: 4 },
+          { total: 4 },
+          { total: 6 },
+          { total: 6 },
+          { total: 7 },
+          { total: 5 }
+        ]
       },
       {
         name: 'Open Access #2',
         location: 'first floor',
-        percentage: 25
+        total: 32,
+        groupings: [
+          { total: 4 },
+          { total: 4 },
+          { total: 6 },
+          { total: 6 },
+          { total: 7 },
+          { total: 5 }
+        ]
       },
       {
         name: 'Shared Access #1',
         location: 'first floor left',
-        percentage: 20
+        total: 25,
+        groupings: [
+          { total: 7 },
+          { total: 6 },
+          { total: 5 },
+          { total: 4 },
+          { total: 3 }
+        ]
       },
       {
         name: 'Shared Access #2',
         location: 'first floor right',
-        percentage: 10
+        total: 12,
+        groupings: [
+          { total: 7 },
+          { total: 6 }
+        ]
       },
       {
         name: 'Open Access #3',
         location: 'second floor',
-        percentage: 20
+        total: 25,
+        groupings: [
+          { total: 4 },
+          { total: 6 },
+          { total: 5 },
+          { total: 5 },
+          { total: 5 }
+        ]
       }
     ];
   } else if (reference === 'pk') {
@@ -158,79 +193,221 @@ function generateAreas(reference, occupied, total) {
       {
         name: 'Open Access #1',
         location: 'left left',
-        percentage: 32
+        total: 17,
+        groupings: [
+          { total: 5 },
+          { total: 4 },
+          { total: 4 },
+          { total: 4 }
+        ]
       },
       {
         name: 'Open Access #2',
         location: 'left center',
-        percentage: 36
+        total: 17,
+        groupings: [
+          { total: 5 },
+          { total: 5 },
+          { total: 4 },
+          { total: 3 }
+        ]
       },
       {
         name: 'Open Access #1',
         location: 'left right',
-        percentage: 32
+        total: 16,
+        groupings: [
+          { total: 4 },
+          { total: 4 },
+          { total: 4 },
+          { total: 4 }
+        ]
       }
     ];
   } else if (reference === 'ul') {
     areas = [
       {
+        name: 'Cafe',
+        location: 'forwards right',
+        total: 8,
+        groupings: [
+          { total: 8 }
+        ]
+      },
+      {
+        name: 'Open Access Corridor',
+        location: 'forwards',
+        total: 8,
+        groupings: [
+          { total: 5 },
+          { total: 3 }
+        ]
+      },
+      {
         name: 'Open Access #1',
-        location: 'right',
-        percentage: 5
+        location: 'forwards first room',
+        total: 23,
+        groupings: [
+          { total: 5 },
+          { total: 5 },
+          { total: 5 },
+
+          { total: 8 }
+        ]
       },
       {
         name: 'Open Access #2',
-        location: 'right',
-        percentage: 5
+        location: 'forwards second room',
+        total: 24,
+        groupings: [
+          { total: 5 },
+          { total: 5 },
+          { total: 5 },
+
+          { total: 9 }
+        ]
       },
       {
         name: 'Open Access #3',
-        location: 'right',
-        percentage: 5
+        location: 'forwards third room',
+        total: 17,
+        groupings: [
+          { total: 5 },
+          { total: 5 },
+          { total: 7 }
+        ]
       },
       {
         name: 'Open Access #4',
-        location: 'right',
-        percentage: 5
+        location: 'forwards round corner third room',
+        total: 24,
+        groupings: [
+          { total: 6 },
+          { total: 6 },
+          { total: 6 },
+          { total: 6 }
+        ]
       },
       {
         name: 'Open Access #5',
-        location: 'right',
-        percentage: 5
+        location: 'forwards round corner fourth room',
+        total: 24,
+        groupings: [
+          { total: 6 },
+          { total: 6 },
+          { total: 6 },
+          { total: 6 }
+        ]
       },
       {
         name: 'Open Access #6',
-        location: 'right',
-        percentage: 5
+        location: 'forwards round corner fifth room',
+        total: 24,
+        groupings: [
+          { total: 6 },
+          { total: 6 },
+          { total: 6 },
+          { total: 6 }
+        ]
       },
       {
-        name: 'Shared Library',
-        location: 'right',
-        percentage: 25
+        name: 'Social Library',
+        location: 'left',
+        total: 49,
+        groupings: [
+          { location: 'farthest table left', total: 7 },
+
+          { location: '6 table left, left side', total: 5 },
+          { location: '6 table left, right side', total: 5 },
+
+          { location: '5 table left, left side', total: 4 },
+          { location: '5 table left, right side', total: 4 },
+
+          { location: '4 table left, left side', total: 3 },
+          { location: '4 table left, right side', total: 3 },
+
+          { location: '3 table left, left side', total: 3 },
+          { location: '3 table left, right side', total: 3 },
+
+          { location: '2 table left, left side', total: 3 },
+          { location: '2 table left, right side', total: 3 },
+
+          { location: '1 table left, left side', total: 3 },
+          { location: '1 table left, right side', total: 3 },
+        ]
       },
       {
         name: 'Main Library',
         location: 'right',
-        percentage: 45
+        total: 200,
+        groupings: [
+          { location: '0 0 star table top left', total: 6 },
+          { location: '0 0 star table top right', total: 6 },
+          { location: '0 0 star table bottom', total: 6 },
+
+          { location: '0 1 star table top left', total: 6 },
+          { location: '0 1 star table top right', total: 6 },
+          { location: '0 1 star table bottom', total: 6 },
+
+          { location: '1 0 star table top left', total: 6 },
+          { location: '1 0 star table top right', total: 6 },
+          { location: '1 0 star table bottom', total: 6 },
+
+          { location: '1 1 star table top left', total: 6 },
+          { location: '1 1 star table top right', total: 6 },
+          { location: '1 1 star table bottom', total: 6 },
+
+          { location: '1 2 star table top left', total: 6 },
+          { location: '1 2 star table top right', total: 6 },
+          { location: '1 2 star table bottom', total: 6 },
+
+          { location: '2 1 star table top', total: 6 },
+          { location: '2 1 star table bottom right', total: 6 },
+          { location: '2 1 star table bottom left', total: 6 },
+
+          { location: '2 2 star table top', total: 6 },
+          { location: '2 2 star table bottom right', total: 6 },
+          { location: '2 2 star table bottom left', total: 6 },
+
+          { location: '3 1 star table top left', total: 6 },
+          { location: '3 1 star table top right', total: 6 },
+          { location: '3 1 star table bottom', total: 6 },
+
+          { location: '8 table furthest side, top side', total: 3 },
+          { location: '8 table furthest side, bottom side', total: 3 },
+
+          { location: '7 table furthest side, top side', total: 3 },
+          { location: '7 table furthest side, bottom side', total: 3 },
+
+          { location: '6 table furthest side, left side', total: 4 },
+          { location: '6 table furthest side, right side', total: 4 },
+
+          { location: '5 table furthest side, top side', total: 4 },
+          { location: '5 table furthest side, bottom side', total: 3 },
+
+          { location: '4 table furthest side, top side', total: 4 },
+          { location: '4 table furthest side, bottom side', total: 4 },
+
+          { location: '3 table furthest side, top side', total: 4 },
+          { location: '3 table furthest side, bottom side', total: 4 },
+
+          { location: '2 table furthest side, left side', total: 3 },
+          { location: '2 table furthest side, right side', total: 3 },
+
+          { location: '1 table furthest side, left side', total: 3 },
+          { location: '1 table furthest side, right side', total: 3 },
+
+          { location: 'next to support services', total: 1 }
+        ]
       }
     ];
   }
 
-  // add default occupied and totals to areas
-  areas = areas.map(area => {
-    area.occupied = 0;
-    area.total = 0;
-    return area;
-  });
-
-  areas = sharePcs(areas, occupied, total);
+  areas = shareAmount(areas, occupied, total);
 
   areas = areas.map(area => {
-
-    area.groupings = generateGroupings(area.occupied, area.total);
-
+    area.groupings = generateGroupings(area, area.occupied, area.total);
     return area;
-
   });
 
   return areas;
@@ -239,10 +416,23 @@ function generateAreas(reference, occupied, total) {
 
 function generateBuildings(data) {
   return data.map(item => {
+
+    if (item.building.reference === 'ag') {
+      item.in_use = 5;
+    } else if (item.building.reference === 'ul') {
+      item.in_use = 333;
+    } else if (item.building.reference === 'pk') {
+      item.in_use = 35;
+    } else if (item.building.reference === 'po') {
+      item.in_use = 102;
+    }
+
     return {
       reference: item.building.reference,
       name: item.building.name,
       open: item.open,
+      occupied: item.in_use,
+      total: item.total,
       areas: generateAreas(item.building.reference, item.in_use, item.total)
     };
   });
@@ -294,11 +484,24 @@ client.dropDatabase(options.database, (err) => {
           if (Array.isArray(dataItem)) {
             try {
               const buildings = escapeString(JSON.stringify(generateBuildings(dataItem)));
-              snapshots.push([{ time, buildings }]);
+              const snapshot = [{ time, buildings }];
+
+              const fs = require('fs');
+
+              const outputFilename = `./${time}-tmp-data.json`;
+              /* eslint-disable no-loop-func */
+              fs.writeFile(outputFilename, JSON.stringify(buildings, null, 4), (writeErr) => {
+                if (writeErr) {
+                  console.log(writeErr);
+                } else {
+                  console.log(`JSON saved to ${outputFilename}`);
+                }
+              });
+
+              snapshots.push(snapshot);
             } catch (e) { // catch any naughty data
               console.log(dataItem);
-              console.log('Error: ', e);
-              return;
+              return console.log('Error: ', e);
             }
           }
 
@@ -313,6 +516,7 @@ client.dropDatabase(options.database, (err) => {
         precision: 's'
       }, (databaseWriteErr) => {
         if (databaseWriteErr) {
+          console.log('cool');
           return console.log(databaseWriteErr);
         }
 

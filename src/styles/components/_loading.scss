@@ -3,9 +3,8 @@
 .loading {}
 
 .loading__message {
-  margin-top: -1em;
-  margin-right: -1em;
-  font-size: 10em;
+  margin-top: 3em;
+  font-size: 5em;
   text-align: center;
   animation: loadingIn .5s;
 }

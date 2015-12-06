@@ -65,7 +65,7 @@ function generatePcs(occupied, total) {
 
   for (let i = 0; i < total; i++) {
 
-    let user = false;
+    let user = '';
 
     // check if we still have occupied pcs to generate
     if (occupiedCount > 0) {
@@ -454,7 +454,7 @@ function createDatabase() {
     byTime: {
       map: `function(doc) {
         if (doc.time && doc.buildings) {
-          emit(doc._time, doc);
+          emit(doc.time, doc);
         }
       }`
     }

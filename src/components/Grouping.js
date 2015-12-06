@@ -11,14 +11,13 @@ class Grouping extends Component {
     const { grouping } = this.props;
 
     function calcFreePcs(pcs, frees, pcsFree, i, amount) {
-
       if (i < pcs.length - amount) {
 
         const pc = pcs[i + amount];
-        const pcFree = (!pc.user && !pc.broken);
+        const pcOccupied = pc.user.length;
 
         // if the pc isnt available or we've reached the end of the availabiliies
-        if (!pcFree || amount > frees.length - 1) {
+        if (pcOccupied || amount > frees.length - 1) {
           return false;
         }
 

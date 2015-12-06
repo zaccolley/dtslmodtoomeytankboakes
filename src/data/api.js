@@ -1,4 +1,4 @@
-import { db } from './dbClient';
+import { db } from './db';
 
 // Model types
 class User extends Object {}
@@ -48,6 +48,37 @@ function getSnapshots() {
 
             area.groupings.map((grouping, groupingCount) => {
               grouping.id = area.id + groupingCount;
+
+              function calcFreePcs(pcs, frees, pcsFree, i, amount) {
+                if (i < pcs.length - amount) {
+
+                  const newPc = pcs[i + amount];
+                  const pcOccupied = newPc.user.length;
+
+                  // if the pc isnt available or we've reached the end of the availabiliies
+                  if (pcOccupied || amount > frees.length - 1) {
+                    return false;
+                  }
+
+                  const newPcsFree = [newPc, ...pcsFree].sort();
+                  frees[amount].push(newPcsFree);
+                  return calcFreePcs(pcs, frees, newPcsFree, i, amount + 1);
+                }
+
+              }
+
+              const frees = [
+                [], [], [], []
+              ];
+
+              for (let i = 0; i < grouping.pcs.length; i++) {
+                const amount = 0;
+                const pcsFree = [];
+
+                calcFreePcs(grouping.pcs, frees, pcsFree, i, amount);
+              }
+
+              grouping.frees = frees;
 
               grouping.pcs.map((pc, pcCount) => {
                 pc.id = grouping.id + pcCount;

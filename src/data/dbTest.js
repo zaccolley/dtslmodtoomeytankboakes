@@ -1,4 +1,4 @@
-import { db } from './dbClient';
+import { db } from './db';
 
 /* Allow console.logs in this file */
 /* eslint-disable no-console */

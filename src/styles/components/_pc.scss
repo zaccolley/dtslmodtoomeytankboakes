@@ -9,19 +9,27 @@
 
 .pc {
   float: left;
-  height: 8px;
-  width: 8px;
-  margin-right: 6px;
-  margin-top: 6px;
+  height: 10px;
+  width: 10px;
+  margin-right: 4px;
+  margin-top: 4px;
 
   background: darken($colour--bg, 10%);
   border-radius: 50%;
 }
 
+circle.pc {
+  fill: darken($colour--bg, 10%);
+}
+
 .pc--free {
-  background: linear-gradient(to top right, #FF1354, #DACE2C);
+  background: #FF1354;
 
   animation: pcFreePulse 1s infinite ease-in;
+}
+
+circle.pc--free {
+  fill: #FF1354;
 }
 
 @keyframes pcFreePulse {

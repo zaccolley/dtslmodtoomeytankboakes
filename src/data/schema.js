@@ -32,7 +32,7 @@ import {
   getViewer,
   getSnapshot,
   getSnapshots
-} from './database';
+} from './api';
 
 /**
  * We get the node interface and field from the Relay library.
@@ -135,6 +135,10 @@ const areaType = new GraphQLObjectType({
   description: 'Areas in the building',
   fields: () => ({
     id: globalIdField('Area'),
+    reference: {
+      type: GraphQLString,
+      description: 'A short code for referencing the area'
+    },
     name: {
       type: GraphQLString,
       description: 'The name of the area'

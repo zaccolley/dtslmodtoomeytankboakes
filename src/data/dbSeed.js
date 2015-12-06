@@ -1,4 +1,4 @@
-import { db } from './dbClient';
+import { db } from './db';
 import request from 'request';
 
 /* Allow console.logs in this file */
@@ -223,6 +223,7 @@ function generateAreas(reference, occupied, total) {
   } else if (reference === 'ul') {
     areas = [
       {
+        reference: 'cafe',
         name: 'Cafe',
         location: 'forwards right',
         total: 8,
@@ -231,6 +232,7 @@ function generateAreas(reference, occupied, total) {
         ]
       },
       {
+        reference: 'oac',
         name: 'Open Access Corridor',
         location: 'forwards',
         total: 8,
@@ -240,6 +242,7 @@ function generateAreas(reference, occupied, total) {
         ]
       },
       {
+        reference: 'oa1',
         name: 'Open Access #1',
         location: 'forwards first room',
         total: 23,
@@ -252,6 +255,7 @@ function generateAreas(reference, occupied, total) {
         ]
       },
       {
+        reference: 'oa2',
         name: 'Open Access #2',
         location: 'forwards second room',
         total: 24,
@@ -264,6 +268,7 @@ function generateAreas(reference, occupied, total) {
         ]
       },
       {
+        reference: 'oa3',
         name: 'Open Access #3',
         location: 'forwards third room',
         total: 17,
@@ -274,6 +279,7 @@ function generateAreas(reference, occupied, total) {
         ]
       },
       {
+        reference: 'oa4',
         name: 'Open Access #4',
         location: 'forwards round corner third room',
         total: 24,
@@ -285,6 +291,7 @@ function generateAreas(reference, occupied, total) {
         ]
       },
       {
+        reference: 'oa5',
         name: 'Open Access #5',
         location: 'forwards round corner fourth room',
         total: 24,
@@ -296,6 +303,7 @@ function generateAreas(reference, occupied, total) {
         ]
       },
       {
+        reference: 'oa6',
         name: 'Open Access #6',
         location: 'forwards round corner fifth room',
         total: 24,
@@ -307,6 +315,7 @@ function generateAreas(reference, occupied, total) {
         ]
       },
       {
+        reference: 'sl',
         name: 'Social Library',
         location: 'left',
         total: 49,

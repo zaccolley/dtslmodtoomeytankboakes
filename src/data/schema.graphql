@@ -1,5 +1,6 @@
 type Area implements Node {
   id: ID!
+  reference: String
   name: String
   location: String
   occupied: Int

@@ -2,6 +2,25 @@
 
 .snapshot {}
 
+.snapshot__map-button {
+  position: absolute;
+  right: .5em;
+  top: .5em;
+  z-index: 1;
+  padding: .25em .75em;
+
+  font-size: 1.25em;
+  color: white;
+
+  border: 0;
+  background: #ff1354;
+  border-radius: 4px;
+}
+
+.snapshot__map-button:hover {
+  cursor: pointer;
+}
+
 .snapshot__time {
   margin-top: 9em;
   position: absolute;

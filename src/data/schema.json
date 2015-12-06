@@ -582,6 +582,18 @@
               "deprecationReason": null
             },
             {
+              "name": "reference",
+              "description": "A short code for referencing the area",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "name",
               "description": "The name of the area",
               "args": [],

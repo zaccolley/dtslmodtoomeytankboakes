@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
+import PC from './PC';
 
 class Grouping extends Component {
   static propTypes = {
@@ -32,45 +33,28 @@ class Grouping extends Component {
       [], [], [], []
     ];
 
-    const pcs = grouping.pcs;
-
-    for (let i = 0; i < pcs.length; i++) {
+    for (let i = 0; i < grouping.pcs.length; i++) {
       const amount = 0;
       const pcsFree = [];
 
-      calcFreePcs(pcs, frees, pcsFree, i, amount);
+      calcFreePcs(grouping.pcs, frees, pcsFree, i, amount);
     }
 
-    const arrows = {
-      top: '↑',
-      topRight: '↗',
-      right: '→',
-      bottomRight: '↘',
-      bottom: '↓',
-      bottomLeft: '↙',
-      left: '←',
-      topLeft: '↖'
-    };
+    grouping.frees = frees;
 
     return (
-      <div className="groupings">
-        <div className="grouping">
-          <div className="grouping__arrow grouping__arrow--left">{arrows.left}</div>
-          <div className="grouping__amount">1 <small>({frees[0].length})</small></div>
-        </div>
-        <div className="grouping">
-          <div className="grouping__arrow grouping__arrow--left">{arrows.topLeft}</div>
-          <div className="grouping__amount">2 <small>({frees[1].length})</small></div>
-        </div>
-        <div className="grouping">
-          <div className="grouping__arrow grouping__arrow--left">{arrows.right}</div>
-          <div className="grouping__amount">3 <small>({frees[2].length})</small></div>
-        </div>
-        <div className="grouping">
-          <div className="grouping__arrow grouping__arrow--left">{arrows.top}</div>
-          <div className="grouping__amount">4 <small>({frees[3].length})</small></div>
-        </div>
+    <div className="grouping">
+
+      <div className="grouping__location">{grouping.location}</div>
+      <div className="grouping__tally">{grouping.occupied} / {grouping.total}</div>
+
+      <div className="pcs">
+      {grouping.pcs.map((pc, i) =>
+        <PC key={`${pc.id}_${i}`} pc={pc} />
+      )}
       </div>
+
+    </div>
     );
 
   }
@@ -80,11 +64,14 @@ export default Relay.createContainer(Grouping, {
   fragments: {
     grouping: () => Relay.QL`
       fragment on Grouping {
+        id,
         location,
+        occupied,
+        total,
         pcs{
           id,
           user,
-          broken
+          ${PC.getFragment('pc')}
         }
       }
     `,

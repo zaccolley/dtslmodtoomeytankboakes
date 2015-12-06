@@ -20,12 +20,25 @@ $colour--bg: $colour--lightest;
 // -- general styles
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Cabin', sans-serif;
 
   background: $colour--bg;
+  animation: rainbowRotate 12s infinite;
+}
+
+@keyframes rainbowRotate{
+  to{
+    filter: hue-rotate(360deg);
+  }
 }
 
 // components
 
 @import 'components/loading';
-@import 'components/groupings';
+
+@import 'components/snapshot';
+@import 'components/app';
+@import 'components/building';
+@import 'components/area';
+@import 'components/grouping';
+@import 'components/pc';

@@ -11,10 +11,19 @@ class Area extends Component {
 
     const { area } = this.props;
 
-    const grouping = area.groupings[0];
-
     return (
-      <Grouping grouping={grouping} />
+    <div className={'area' + (area.name === 'Main Library' ? ' area--main-library' : '')}>
+
+      <div className="area__name">{area.name}</div>
+      <div className="area__location">{area.location}</div>
+
+      <div className="groupings">
+      {area.groupings.map((grouping, i) =>
+        <Grouping key={grouping.id + i} grouping={grouping} />
+      )}
+      </div>
+
+    </div>
     );
 
   }

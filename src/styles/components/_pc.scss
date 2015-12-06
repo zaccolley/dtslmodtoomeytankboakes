@@ -1,0 +1,39 @@
+// _pc.scss
+
+.pcs {
+  overflow: hidden;
+  margin-bottom: 1.25em;
+  margin-left: -3px;
+  padding: 4px;
+}
+
+.pc {
+  float: left;
+  height: 8px;
+  width: 8px;
+  margin-right: 6px;
+  margin-top: 6px;
+
+  background: darken($colour--bg, 10%);
+  border-radius: 50%;
+}
+
+.pc--free {
+  background: linear-gradient(to top right, #FF1354, #DACE2C);
+
+  animation: pcFreePulse 1s infinite ease-in;
+}
+
+@keyframes pcFreePulse {
+    0% { box-shadow: 0 0 0 0px $colour--bg, 0 0 0 1px rgba(#DACE2C, 0); }
+   50% { box-shadow: 0 0 0 1px $colour--bg, 0 0 0 2px rgba(#DACE2C, 1); }
+  100% { box-shadow: 0 0 0 3px $colour--bg, 0 0 0 3px rgba(#DACE2C, 0); }
+}
+
+.pc--occupied {}
+
+.pc__user,
+.pc__status,
+.pc__location {
+  display: none;
+}

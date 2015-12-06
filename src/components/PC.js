@@ -10,10 +10,12 @@ class PC extends Component {
 
     const { pc } = this.props;
 
+    const occupied = !!pc.user.length;
+
     return (
-      <div>
-        {pc.user ? pc.user : 'No user'} <br />
-        {pc.broken && 'Its fucking broken'}
+      <div className={'pc' + (occupied ? ' pc--occupied' : ' pc--free')}>
+        {occupied && <span className="pc__user">{pc.user}</span>}
+        <span className="pc__status">{pc.user.length ? 'Free' : 'Taken'}</span>
       </div>
     );
 
@@ -24,8 +26,7 @@ export default Relay.createContainer(PC, {
   fragments: {
     pc: () => Relay.QL`
       fragment on PC {
-        user,
-        broken
+        user
       }
     `,
   },

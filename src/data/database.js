@@ -29,7 +29,7 @@ function getSnapshot(key) {
 function getSnapshots() {
   return new Promise((resolve, reject) => {
 
-    db.view('snapshots/all', { limit: 5 }, (err, response) => {
+    db.view('snapshots/byTime', { key: '1446599972' }, (err, response) => {
       if (err) {
         return reject(`✗ Didn't work...\n Database error: ${err}`);
       }

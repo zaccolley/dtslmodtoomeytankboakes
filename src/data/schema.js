@@ -97,7 +97,6 @@ const snapshotType = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-
 const buildingType = new GraphQLObjectType({
   name: 'Building',
   description: 'A building',
@@ -114,6 +113,14 @@ const buildingType = new GraphQLObjectType({
     open: {
       type: GraphQLBoolean,
       description: 'Whether is building is open or not'
+    },
+    occupied: {
+      type: GraphQLInt,
+      description: 'Occupied pcs at this level'
+    },
+    total: {
+      type: GraphQLInt,
+      description: 'Total pcs at this level'
     },
     areas: {
       type: new GraphQLList(areaType),
@@ -136,6 +143,14 @@ const areaType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'The location'
     },
+    occupied: {
+      type: GraphQLInt,
+      description: 'Occupied pcs at this level'
+    },
+    total: {
+      type: GraphQLInt,
+      description: 'Total pcs at this level'
+    },
     groupings: {
       type: new GraphQLList(groupingType),
       description: 'Groupings in the areas'
@@ -153,6 +168,14 @@ const groupingType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'The location'
     },
+    occupied: {
+      type: GraphQLInt,
+      description: 'Occupied pcs at this level'
+    },
+    total: {
+      type: GraphQLInt,
+      description: 'Total pcs at this level'
+    },
     pcs: {
       type: new GraphQLList(pcType),
       description: 'pcs in the groupings'
@@ -169,10 +192,6 @@ const pcType = new GraphQLObjectType({
     user: {
       type: GraphQLString,
       description: 'Student ID or false'
-    },
-    broken: {
-      type: GraphQLBoolean,
-      description: 'Is it borked?'
     }
   }),
   interfaces: [nodeInterface],

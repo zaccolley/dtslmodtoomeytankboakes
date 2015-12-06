@@ -1,0 +1,13 @@
+// _snapshot.scss
+
+.snapshot {}
+
+.snapshot__time {
+  margin-top: 9em;
+  position: absolute;
+
+  color: darken($colour--bg, 10%);
+
+  transform-origin: left;
+  transform: rotate(90deg);
+}

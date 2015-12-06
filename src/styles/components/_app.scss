@@ -1,0 +1,35 @@
+// _app.scss
+
+.app{
+  padding-left: 1em;
+  padding-bottom: 2.5em;
+}
+
+.app__nav{
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+  padding: .5em;
+
+  background: white;
+
+  opacity: .5;
+  transition: opacity .33s;
+}
+
+.app__nav:hover{
+  opacity: 1;
+}
+
+.app__nav__title{
+  display: inline-block;
+  margin-right: 2em;
+}
+
+.app__nav__item{
+  margin-right: 1em;
+
+  text-decoration: none;
+  color: darken(#DACE2C, 25%);
+  font-weight: bold;
+}

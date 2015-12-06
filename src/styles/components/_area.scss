@@ -1,0 +1,38 @@
+// _areas.scss
+
+.areas {
+  display: flex;
+  flex-direction: row;
+  padding: 6em 2em 0;
+}
+
+.area {
+  flex-grow: 1;
+}
+
+.area--main-library{
+  flex-grow: 2;
+}
+
+.area__name {
+  width: 0;
+  height: 0;
+  white-space: nowrap;
+
+  font-size: 16px;
+  color: #4E4E4E;
+
+  transform: rotate(-45deg) translate(-1em);
+  transform-origin: left;
+}
+
+.area__location {
+  height: 0; width: 0;
+  white-space: nowrap;
+
+  font-size: .75em;
+  color: #CECECE;
+
+  transform: rotate(-45deg) translate(-1em, 1.5em);
+  transform-origin: left;
+}

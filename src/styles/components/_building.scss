@@ -1,0 +1,17 @@
+// _building.scss
+
+.building {
+  overflow: hidden;
+  padding-top: .75em;
+}
+
+.building__name {
+  height: 0;
+  text-align: right;
+
+  color: lighten($colour--bg, 10%);
+
+  font-size: 15em;
+  transform: translate(.25em, -.5em);
+  transform-origin: right;
+}

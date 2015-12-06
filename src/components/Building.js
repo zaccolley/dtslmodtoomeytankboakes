@@ -12,11 +12,17 @@ class Building extends Component {
     const { building } = this.props;
 
     return (
-      <div>
+    <div className="building">
+
+      <div className="building__name">{building.name}</div>
+
+      <div className="areas">
       {building.areas.map((area, i) =>
         <Area key={area.id + i} area={area} />
       )}
       </div>
+
+    </div>
     );
 
   }

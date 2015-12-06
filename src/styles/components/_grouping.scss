@@ -1,0 +1,22 @@
+/* groupings */
+
+.groupings {
+  padding-top: 2.5em;
+}
+
+.grouping {
+  float: left;
+  width: 54px;
+}
+
+.grouping__tally {
+  line-height: 1em;
+  margin-bottom: -4px;
+
+  font-size: .5em;
+  color: #B1B1B1;
+}
+
+.grouping__location {
+  display: none;
+}

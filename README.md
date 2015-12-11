@@ -26,6 +26,8 @@ _Using eslint, would recommemd installing the `linter-eslint` package from Atom.
 To test the database connection and return data you should run
 `npm run db-test`
 
+You can also check CouchDB at: [http://127.0.0.1:5984/_utils](http://127.0.0.1:5984/_utils)
+
 # Build
 
 If you ever update the schema you should run

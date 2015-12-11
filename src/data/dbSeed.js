@@ -511,6 +511,9 @@ function createDatabase() {
 
     console.log('✓ Data processed into snapshots!');
     console.log('⚡ Writing snapshots to database...');
+    setTimeout(() => {
+      console.log('  This might take a while...');
+    }, 5000);
 
     db.save(snapshots, (databaseWriteErr) => { // eslint-disable-line no-loop-func
       if (databaseWriteErr) {

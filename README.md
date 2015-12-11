@@ -13,11 +13,11 @@ Rob Calcroft created a script to collect the information, get your hands on the 
 
 To install the application onto your machine follow the following links:
 
-1. [Install CouchDB](https://wiki.apache.org/couchdb/Installation)
+1. [Install and Run CouchDB](https://wiki.apache.org/couchdb/Installation)
 2. (Optional) Add .env values (see .env-sample)
 3. `npm install`
 4. `npm run update-schema`
-5. `npm run db-seed`
+5. `npm run db-seed` (This will take forever sorry...)
 
 _Using eslint, would recommemd installing the `linter-eslint` package from Atom. `apm install linter-eslint`_
 

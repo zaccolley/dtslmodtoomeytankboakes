@@ -422,6 +422,7 @@ function generateAreas(reference, occupied, total) {
 function generateBuildings(data) {
   return data.map(item => {
 
+    // debug values for in use
     if (item.building.reference === 'ag') {
       item.in_use = 5;
     } else if (item.building.reference === 'ul') {

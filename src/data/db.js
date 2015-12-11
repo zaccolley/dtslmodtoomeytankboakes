@@ -9,8 +9,7 @@ export const options = {
   database: 'webres',
   cache: true,
   raw: false,
-  forceSave: true,
-  auth: {}
+  forceSave: true
 };
 
 // if username and password set for couchdb

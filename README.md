@@ -21,13 +21,6 @@ To install the application onto your machine follow the following links:
 
 _Using eslint, would recommemd installing the `linter-eslint` package from Atom. `apm install linter-eslint`_
 
-# Test
-
-To test the database connection and return data you should run
-`npm run db-test`
-
-You can also check CouchDB at: [http://127.0.0.1:5984/_utils](http://127.0.0.1:5984/_utils)
-
 # Build
 
 If you ever update the schema you should run
@@ -36,7 +29,15 @@ If you ever update the schema you should run
 # Run
 
 1. `npm start`
-2. Go to [localhost:3000](localhost:3000)
+2. Go to [localhost:3000/#/ul](localhost:3000/#/ul) for the Library view
+3. Use the nav or map links to browse arooound
+
+# Test
+
+To test the database connection and return data you should run
+`npm run db-test`
+
+You can also check CouchDB at: [http://127.0.0.1:5984/_utils](http://127.0.0.1:5984/_utils)
 
 # Issues
 

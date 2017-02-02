@@ -1,5 +1,7 @@
 # WEBRES - Sprint 1 - Data Visualization Sprint
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zaccolley/react-relay-graphql-experiments.svg)](https://greenkeeper.io/)
+
 This repo contains the following information:
 
 1. Our code for the sprint.
